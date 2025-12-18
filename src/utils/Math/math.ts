@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js'
 import { unique } from '../Array/arrayFn'
-import { isNumber } from '../Data/data'
+import { isArray, isCouldBeClacType, isNumber } from '../Data/data'
 
 /**
  * @description 获取指定范围内的随机整数
@@ -72,4 +72,31 @@ export function getArrayAverage<T extends Record<string, any>>(arr: T[], calcKey
     }
     return acc
   }, {} as Record<string, number>)
+}
+
+/**
+ * 将对象中的指定键的值格式化为指定的小数位数
+ * @param {T} data - 要格式化的对象
+ * @param {Array<keyof T>} keys - 要格式化的键数组
+ * @param {number} [fractionDigits] - 小数位数，默认为2
+ * @returns {T} 返回格式化后的对象
+ *
+ * 该方法用于将对象中的指定键的值格式化为指定的小数位数。
+ * 例如，当传入的对象为 { a: 1.2345, b: 2.3456 }，键数组为 ['a', 'b']，小数位数为 2 时，返回的对象为 { a: '1.23', b: '2.35' }。
+ */
+export function toFixedByKeys<T extends Record<string, any>>(data: T, keys?: (keyof T)[], fractionDigits: number = 2): T {
+  if (!data || typeof data !== 'object' || (isArray(keys) && keys.length === 0)) {
+    return {} as T
+  }
+  if (keys && keys.length > 0) {
+    return keys.reduce((acc, key) => {
+      acc[key as string] = isCouldBeClacType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
+      return acc
+    }, {} as Record<string, string>) as T
+  }
+
+  return Object.keys(data).reduce((acc, key) => {
+    acc[key as string] = isCouldBeClacType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
+    return acc
+  }, {} as Record<string, string>) as T
 }

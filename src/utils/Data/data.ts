@@ -169,6 +169,10 @@ export function isNull(data: any): data is null {
   return Object.prototype.toString.call(data) === '[object Null]'
 }
 
+export function isCouldBeClacType(data: any): boolean {
+  return isNumber(data) || isString(data)
+}
+
 export function isUndefined(data: any): data is undefined {
   return Object.prototype.toString.call(data) === '[object Undefined]'
 }
