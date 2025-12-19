@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="exportExcelButton">导出Excel</button>
+  <script type="module">
+    import { exportExcel } from './src/utils/index.js'
+    const exportExcelButton = document.getElementById('exportExcelButton')
+    exportExcelButton.addEventListener('click', handleExportExcel)
+    async function handleExportExcel() {
+      try {
+        await exportExcel([
+          {
+            data: [
+              { infoDate: '2025-12-01', infoTime: '08:00', actualLoad: 1200, dayAheadPrice: 450, realTimePrice: 465 },
+              { infoDate: '2025-12-01', infoTime: '09:00', actualLoad: 1350, dayAheadPrice: 458, realTimePrice: 472 },
+              { infoDate: '2025-12-02', infoTime: '08:00', actualLoad: 1180, dayAheadPrice: 445, realTimePrice: 458 },
+            ],
+            tableHeader: [
+              { header: '日期', key: 'infoDate' },
+              { header: '时段', key: 'infoTime' },
+              { header: '竞价空间', key: 'actualLoad' },
+              { header: '日前电价', key: 'dayAheadPrice' },
+              { header: '实时电价', key: 'realTimePrice' },
+            ],
+            sheetName: '表单1',
+          },
+          {
+            data: [
+              { infoDate: '2025-12-02', infoTime: '08:00', actualLoad: 1200, dayAheadPrice: 450, realTimePrice: 465 },
+              { infoDate: '2025-12-03', infoTime: '09:00', actualLoad: 1350, dayAheadPrice: 458, realTimePrice: 472 },
+              { infoDate: '2025-12-04', infoTime: '08:00', actualLoad: 1180, dayAheadPrice: 445, realTimePrice: 458 },
+            ],
+            tableHeader: [
+              { header: '日期', key: 'infoDate' },
+              { header: '时段', key: 'infoTime' },
+              { header: '竞价空间', key: 'actualLoad' },
+              { header: '日前电价', key: 'dayAheadPrice' },
+              { header: '实时电价', key: 'realTimePrice' },
+            ],
+            sheetName: '表单2',
+          }
+        ], '测试文件', (cell) => {
+          cell.alignment = { horizontal: 'center', vertical: 'middle' }
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+  </script>
+</body>
+
+</html>
