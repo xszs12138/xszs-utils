@@ -3,6 +3,11 @@ import { unique } from '../Array/arrayFn'
 import { groupBy } from '../Data/data'
 import { getArrayTotal } from '../Math/math'
 
+// 暴露一些预制的时间数组
+export const TIMEARRAY_24 = generateTimePeriod(24)
+export const TIMEARRAY_24_END = generateTimePeriod(24, 'end')
+export const TIMEARRAY_96 = generateTimePeriod(96)
+export const TIMEARRAY_96_END = generateTimePeriod(96, 'end')
 /**
  * 生成时间点数组
  * @param timeMode - 时间模式，96表示96个时间点，24表示24个时间点
@@ -200,17 +205,6 @@ export function getDateRange(dateList: string[] | Set<string> = []): [string, st
  * console.log(transFormData); // [{ infoDate: '2021-01-01', infoTime: '01:00', actualLoad: 1400 }];
  */
 
-const TIME_MAP = new Map(
-  Array.from({ length: 24 }, (_, i) => [
-    `${i === 23 ? '24' : (i + 1).toString().padStart(2, '0')}:00`,
-    Array.from({ length: 4 }, (_, j) => {
-      const totalMinutes = i * 60 + (j + 1) * 15
-      const h = totalMinutes < 1440 ? Math.floor(totalMinutes / 60) : 24
-      const m = totalMinutes % 60
-      return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
-    }),
-  ]),
-)
 export enum TimePeriodMode {
   TwentyFourTimeHour = 24,
   NinetySixTimeHour = 96,
@@ -235,6 +229,18 @@ export function transformDataTo24Or96<T extends Record<string, any>>(
     : TimePeriodMode.TwentyFourTimeHour
   if (oriDataMode === targetTimePeriodMode)
     return originData // 如果原始数据模式和目标模式相同，则直接返回原始数据
+  // 时间Map [01:00 -> [00:15,....,[01:00]]]
+  const TIME_MAP = new Map(
+    Array.from({ length: 24 }, (_, i) => [
+      `${i === 23 ? '24' : (i + 1).toString().padStart(2, '0')}:00`,
+      Array.from({ length: 4 }, (_, j) => {
+        const totalMinutes = i * 60 + (j + 1) * 15
+        const h = totalMinutes < 1440 ? Math.floor(totalMinutes / 60) : 24
+        const m = totalMinutes % 60
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`
+      }),
+    ]),
+  )
   const excludeKeys = allKeys.filter(key => key !== dateKeys && key !== timeKeys && !calcKeys.includes(key as keyof Omit<T, ExcludeKeys<T>>))
   // 构建时间集合用于快速查找（96点模式使用）
   const oriInfoTimeSet = new Set(originData.map(item => `${item[dateKeys]} ${item[timeKeys]}`))
@@ -250,37 +256,32 @@ export function transformDataTo24Or96<T extends Record<string, any>>(
 
   const dateSetArr = unique(originData.map(item => item[dateKeys]))
   const newData: T[] = []
-  const timeArray = targetTimePeriodMode === TimePeriodMode.TwentyFourTimeHour ? generateTimePeriod(24, 'end') : generateTimePeriod(96, 'end')
+  const timeArray = targetTimePeriodMode === TimePeriodMode.TwentyFourTimeHour ? TIMEARRAY_24_END : TIMEARRAY_96_END
   const useFixedDivisor = targetTimePeriodMode === TimePeriodMode.NinetySixTimeHour
   dateSetArr.forEach((date) => {
     const dateData = dataByDate.get(date) || []
     timeArray.forEach((time) => {
-      // 96点模式需要检查时间是否存在
       const targetTime = useFixedDivisor ? roundUpToHour(time) : time
       const timeKey = `${date} ${targetTime}`
       if (useFixedDivisor && !oriInfoTimeSet.has(timeKey)) {
         return
       }
-      // 过滤匹配时间的数据
       const timeMapValues = TIME_MAP.get(targetTime)
       if (!timeMapValues)
         return
       const matchedData = dateData.filter(item => timeMapValues.includes(item[timeKeys]))
       if (matchedData.length === 0)
         return
-      // 创建新对象
       const obj = {
         [dateKeys]: date,
         [timeKeys]: time,
       } as T
-      // 计算需要计算的键的平均值
       calcKeys.forEach((key) => {
         const values = matchedData.map(item => item[key]).filter(v => v !== undefined && v !== null)
         if (values.length === 0) {
           (obj as any)[key] = null
         }
         else {
-          // 24转96点：除以4；96转24点：直接加和
           const divisor = useFixedDivisor ? 4 : 1;
           (obj as any)[key] = values
             .reduce((sum, curr) => sum.add(new Decimal(curr)), new Decimal(0))
