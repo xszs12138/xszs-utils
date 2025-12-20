@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js'
 import { unique } from '../Array/arrayFn'
-import { isArray, isCouldBeClacType, isNumber } from '../Data/data'
+import { isArray, isCouldBeCalcNumType, isNumber } from '../Data/data'
 
 /**
  * @description 获取指定范围内的随机整数
@@ -90,13 +90,13 @@ export function toFixedByKeys<T extends Record<string, any>>(data: T, keys?: (ke
   }
   if (keys && keys.length > 0) {
     return keys.reduce((acc, key) => {
-      acc[key as string] = isCouldBeClacType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
+      acc[key as string] = isCouldBeCalcNumType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
       return acc
     }, {} as Record<string, string>) as T
   }
 
   return Object.keys(data).reduce((acc, key) => {
-    acc[key as string] = isCouldBeClacType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
+    acc[key as string] = isCouldBeCalcNumType(data[key]) ? new Decimal(data[key] ?? 0).toFixed(fractionDigits) : data[key]
     return acc
   }, {} as Record<string, string>) as T
 }

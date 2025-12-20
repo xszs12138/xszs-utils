@@ -1,6 +1,6 @@
 /* eslint-disable test/no-identical-title */
 import { describe, expect, it } from 'vitest'
-import { clearEmptyFields, dfsTreeSort, findNodeInTree, flatToTreeRecursive, getSettledDataArray, isWhatType, modifyKeyNameForRecordList } from './data'
+import { clearEmptyFields, dfsTreeSort, findNodeInTree, flatToTreeRecursive, getSettledDataArray, isCouldBeCalcNumType, isWhatType, modifyKeyNameForRecordList } from './data'
 
 const testArr = [
   {
@@ -118,5 +118,15 @@ describe('dfsTreeSort', () => {
       ] },
 
     ])
+  })
+})
+
+describe('isCouldBeCalcNumType', () => {
+  it('判断是否可以计算为数字', () => {
+    expect(isCouldBeCalcNumType(1)).toEqual(true)
+    expect(isCouldBeCalcNumType('1')).toEqual(true)
+    expect(isCouldBeCalcNumType(true)).toEqual(false)
+    expect(isCouldBeCalcNumType(null)).toEqual(false)
+    expect(isCouldBeCalcNumType(undefined)).toEqual(false)
   })
 })

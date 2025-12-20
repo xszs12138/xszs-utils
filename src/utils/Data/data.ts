@@ -169,8 +169,9 @@ export function isNull(data: any): data is null {
   return Object.prototype.toString.call(data) === '[object Null]'
 }
 
-export function isCouldBeClacType(data: any): boolean {
-  return isNumber(data) || isString(data)
+export function isCouldBeCalcNumType(data: any): boolean {
+  const numberRegex = /^\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?\s*$/i
+  return isNumber(data) || numberRegex.test(data)
 }
 
 export function isUndefined(data: any): data is undefined {
