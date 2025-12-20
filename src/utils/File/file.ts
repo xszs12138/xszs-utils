@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
+import { excelAutoBestWidthPlugin, excelAutoMergeCellPlugin, excelMartNumberPlugin } from './plugins'
 
 export type FileMediaType = 'image' | 'video' | 'audio' | 'other'
 export function fileIsWhatMediaType(file: File): FileMediaType {
@@ -185,12 +186,41 @@ interface SheetOptions {
   data: Record<string, any>[]
   tableHeader: { header: string, key: string }[]
   sheetName: string
+  plugins?: ExportExcelPlugin[]
 }
+
+type ExportExcelPlugin = ExcelAutoMergeCellPlugin | ExcelAutoBestWidthPlugin | ExcelMartNumberPlugin
 
 interface ExportOptions {
   fileName: string
 }
-export type ExportExcelPlugin = 'cellCenter' | 'cellBorder'
+
+interface ExcelAutoMergeCellPlugin {
+  name: 'autoMergeCell'
+}
+
+interface ExcelAutoBestWidthPlugin {
+  name: 'autoBestWidth'
+  options?: {
+    maxThreshold?: number
+  }
+}
+
+interface ExcelMartNumberPlugin {
+  name: 'excelMartNumber'
+  options: {
+    martMaxNumber: number
+    markFontOptions: Partial<ExcelJS.Font>
+  }
+}
+
+// 导出Excel插件 合并单元格
+// export type ExportExcelPlugin = {
+//   name: 'autoMergeCell' | 'autoBestWidth' | 'excelMartNumber'
+//   options?: {
+//     maxThreshold?: number
+//   }
+// }
 /**
  * 导出Excel
  * @param sheetOptions 表单选项
@@ -208,9 +238,10 @@ export async function exportExcel(
       console.warn('warn: this function can only be used in the browser environment')
       return
     }
+
     const workbook = new ExcelJS.Workbook()
     const sheets = Array.isArray(sheetOptions) ? sheetOptions : [sheetOptions]
-    sheets.forEach(({ data, tableHeader, sheetName }) => {
+    sheets.forEach(({ data, tableHeader, sheetName, plugins }) => {
       const worksheet = workbook.addWorksheet(sheetName)
       worksheet.addRow(tableHeader.map(h => h.header))
       data.forEach((item) => {
@@ -220,6 +251,17 @@ export async function exportExcel(
         row.eachCell((cell) => {
           cellFormatFunction(cell)
         })
+      })
+      plugins?.forEach((plugin) => {
+        if (plugin.name === 'autoMergeCell') {
+          excelAutoMergeCellPlugin(worksheet)
+        }
+        else if (plugin.name === 'autoBestWidth') {
+          excelAutoBestWidthPlugin(worksheet, plugin.options as { martMaxNumber: number } | undefined)
+        }
+        else if (plugin.name === 'excelMartNumber') {
+          excelMartNumberPlugin(worksheet, plugin.options as { martMaxNumber: number, markFontOptions: Partial<ExcelJS.Font> } | undefined)
+        }
       })
     })
     const buffer = await workbook.xlsx.writeBuffer()

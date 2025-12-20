@@ -14,44 +14,45 @@
     const exportExcelButton = document.getElementById('exportExcelButton')
     exportExcelButton.addEventListener('click', handleExportExcel)
     async function handleExportExcel() {
-      try {
-        await exportExcel([
+
+         exportExcel([
           {
             data: [
-              { infoDate: '2025-12-01', infoTime: '08:00', actualLoad: 1200, dayAheadPrice: 450, realTimePrice: 465 },
-              { infoDate: '2025-12-01', infoTime: '09:00', actualLoad: 1350, dayAheadPrice: 458, realTimePrice: 472 },
-              { infoDate: '2025-12-02', infoTime: '08:00', actualLoad: 1180, dayAheadPrice: 445, realTimePrice: 458 },
+              { infoDate: '2025-12-01dskajhdgasjhgdjshagdhjsagdhjadgjasg', infoTime: '08:00', student: 1200, teacher: 450, realTimePrice: 465 },
+              { infoDate: '2025-12-01', infoTime: '09:00', student: 1350, teacher: 458, realTimePrice: 472 },
+              { infoDate: '2025-12-02', infoTime: '08:00', student: 1180, teacher: 445, realTimePrice: 458 },
             ],
             tableHeader: [
               { header: '日期', key: 'infoDate' },
               { header: '时段', key: 'infoTime' },
-              { header: '竞价空间', key: 'actualLoad' },
-              { header: '日前电价', key: 'dayAheadPrice' },
-              { header: '实时电价', key: 'realTimePrice' },
+              { header: '学生数', key: 'student' },
+              { header: '老师数', key: 'teacher' },
+              { header: '电价', key: 'realTimePrice' },
             ],
             sheetName: '表单1',
+            plugins: [{ name: 'autoMergeCell' }, { name: 'autoBestWidth', options: { maxThreshold: 100 } }],
           },
           {
             data: [
-              { infoDate: '2025-12-02', infoTime: '08:00', actualLoad: 1200, dayAheadPrice: 450, realTimePrice: 465 },
-              { infoDate: '2025-12-03', infoTime: '09:00', actualLoad: 1350, dayAheadPrice: 458, realTimePrice: 472 },
-              { infoDate: '2025-12-04', infoTime: '08:00', actualLoad: 1180, dayAheadPrice: 445, realTimePrice: 458 },
+              { infoDate: '2025-12-02', infoTime: '08:00', student: 50, teacher: 120, realTimePrice: { a: 1, b: 2 } },
+              { infoDate: '2025-12-02', infoTime: '09:00', student: 100, teacher: undefined, realTimePrice: 472 },
+              { infoDate: '2025-12-04', infoTime: '08:00', student: 20, teacher: [123123], realTimePrice: 458 },
             ],
             tableHeader: [
               { header: '日期', key: 'infoDate' },
               { header: '时段', key: 'infoTime' },
-              { header: '竞价空间', key: 'actualLoad' },
-              { header: '日前电价', key: 'dayAheadPrice' },
-              { header: '实时电价', key: 'realTimePrice' },
+              { header: '学生数', key: 'student' },
+              { header: '老师数', key: 'teacher' },
+              { header: '电价', key: 'realTimePrice' },
             ],
             sheetName: '表单2',
-          }
+            plugins: [{ name: 'autoBestWidth', options: { maxThreshold: 100 } }, { name: 'excelMartNumber', options: { martMaxNumber: 400, markFontOptions: { color: { argb: 'FFFF0000' } } } }],
+          },
         ], '测试文件', (cell) => {
           cell.alignment = { horizontal: 'center', vertical: 'middle' }
+        }).then(() => {
+          console.log('导出成功')
         })
-      } catch (error) {
-        console.error(error)
-      }
     }
 
   </script>

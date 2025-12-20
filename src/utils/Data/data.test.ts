@@ -1,6 +1,6 @@
 /* eslint-disable test/no-identical-title */
 import { describe, expect, it } from 'vitest'
-import { clearEmptyFields, dfsTreeSort, findNodeInTree, flatToTreeRecursive, getSettledDataArray, isCouldBeCalcNumType, isWhatType, modifyKeyNameForRecordList } from './data'
+import { clearEmptyFields, dfsTreeSort, findNodeInTree, flatToTreeRecursive, getSettledDataArray, isCouldBeCalcNumType, isEmptyObject, isWhatType, modifyKeyNameForRecordList } from './data'
 
 const testArr = [
   {
@@ -127,6 +127,13 @@ describe('isCouldBeCalcNumType', () => {
     expect(isCouldBeCalcNumType('1')).toEqual(true)
     expect(isCouldBeCalcNumType(true)).toEqual(false)
     expect(isCouldBeCalcNumType(null)).toEqual(false)
-    expect(isCouldBeCalcNumType(undefined)).toEqual(false)
+    expect(isCouldBeCalcNumType([1233])).toEqual(false)
+  })
+})
+
+describe('isEmptyObject', () => {
+  it('判断是否为空对象', () => {
+    expect(isEmptyObject({})).toEqual(true)
+    expect(isEmptyObject({ a: 1 })).toEqual(false)
   })
 })

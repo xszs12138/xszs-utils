@@ -60,3 +60,42 @@ export function unique<T = any>(arr: T[]): T[] {
   }
   return result
 }
+
+/**
+ * 求数组中的最大值
+ * @param arr 数值数组
+ * @returns 最大值
+ * @example
+ * getArrayMax([1, 2, 3, 4, 5]) // 5
+ */
+
+export function getArrayMax(arr: number[]): number | undefined {
+  if (arr.length === 0)
+    return undefined
+  let max = arr[0]
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i]
+    }
+  }
+  return max
+}
+
+/**
+ * 求数组中的最小值
+ * @param arr 数值数组
+ * @returns 最小值
+ * @example
+ * getArrayMin([1, 2, 3, 4, 5]) // 1
+ */
+export function getArrayMin(arr: number[]): number | undefined {
+  if (arr.length === 0)
+    return undefined
+  let min = arr[0]
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < min) {
+      min = arr[i]
+    }
+  }
+  return min
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { chunk, isEquals, unique } from './arrayFn'
+import { chunk, getArrayMax, getArrayMin, isEquals, unique } from './arrayFn'
 
 describe('arrayFn', () => {
   describe('chunk', () => {
@@ -68,5 +68,17 @@ describe('arrayFn', () => {
       expect(isEquals([1, 2, 3], [1, 2, 3])).toBe(true)
       expect(isEquals([1, 2, 3], [1, 2, 4])).toBe(false)
     })
+  })
+})
+
+describe('getArrayMax', () => {
+  it('should return the max of the array', () => {
+    expect(getArrayMax([1, 2, 3, 4, 5])).toEqual(5)
+  })
+})
+
+describe('getArrayMin', () => {
+  it('should return the min of the array', () => {
+    expect(getArrayMin([1, 2, 3, 4, 5])).toEqual(1)
   })
 })

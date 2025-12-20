@@ -63,6 +63,44 @@ export function findNodeInTree<T extends Record<string, any>>(tree: T[], findId:
 }
 
 /**
+ * @description 深度优先排序树结构
+ * @param tree 树结构
+ * @param sortKey 排序键值
+ * @param direction 排序方向 默认值是升序
+ * @returns 排序后的树结构
+ */
+export type TreeSortDirection = 'ascending' | 'descending'
+export function dfsTreeSort<T extends Record<string, any>>(tree: T[], options?: { sortKey?: keyof T, childrenKey?: keyof T, direction?: TreeSortDirection }): T[] {
+  const { sortKey = 'id', childrenKey = 'children', direction = 'ascending' } = options || { sortKey: 'id', childrenKey: 'children', direction: 'ascending' }
+  return [...tree]
+    .sort((a, b) => {
+      const aValue = a[sortKey]
+      const bValue = b[sortKey]
+      if (aValue == null && bValue == null)
+        return 0
+      if (aValue == null)
+        return direction === 'ascending' ? 1 : -1
+      if (bValue == null)
+        return direction === 'ascending' ? -1 : 1
+
+      if (aValue < bValue)
+        return direction === 'ascending' ? -1 : 1
+      if (aValue > bValue)
+        return direction === 'ascending' ? 1 : -1
+      return 0
+    })
+    .map((node) => {
+      if (isArray(node[childrenKey]) && node[childrenKey].length > 0) {
+        return {
+          ...node,
+          children: dfsTreeSort(node[childrenKey], { sortKey, childrenKey, direction }),
+        }
+      }
+      return { ...node }
+    })
+}
+
+/**
  * @param data 数据
  * @returns 清除空字段后的数据
  * @description 清除对象中的空字段，
@@ -170,8 +208,19 @@ export function isNull(data: any): data is null {
 }
 
 export function isCouldBeCalcNumType(data: any): boolean {
-  const numberRegex = /^\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?\s*$/i
-  return isNumber(data) || numberRegex.test(data)
+  if (isNumber(data)) {
+    return true
+  }
+  if (isString(data)) {
+    const numberRegex = /^\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?\s*$/i
+    return numberRegex.test(data)
+  }
+  return false
+}
+
+// 判断是否为空对象
+export function isEmptyObject(data: any): boolean {
+  return isObject(data) && Object.keys(data).length === 0
 }
 
 export function isUndefined(data: any): data is undefined {
@@ -195,42 +244,4 @@ export function isWhatType(data: any): DataType {
   if (isUndefined(data))
     return 'undefined'
   return 'unknown'
-}
-
-/**
- * @description 深度优先排序树结构
- * @param tree 树结构
- * @param sortKey 排序键值
- * @param direction 排序方向 默认值是升序
- * @returns 排序后的树结构
- */
-export type TreeSortDirection = 'ascending' | 'descending'
-export function dfsTreeSort<T extends Record<string, any>>(tree: T[], options?: { sortKey?: keyof T, childrenKey?: keyof T, direction?: TreeSortDirection }): T[] {
-  const { sortKey = 'id', childrenKey = 'children', direction = 'ascending' } = options || { sortKey: 'id', childrenKey: 'children', direction: 'ascending' }
-  return [...tree]
-    .sort((a, b) => {
-      const aValue = a[sortKey]
-      const bValue = b[sortKey]
-      if (aValue == null && bValue == null)
-        return 0
-      if (aValue == null)
-        return direction === 'ascending' ? 1 : -1
-      if (bValue == null)
-        return direction === 'ascending' ? -1 : 1
-
-      if (aValue < bValue)
-        return direction === 'ascending' ? -1 : 1
-      if (aValue > bValue)
-        return direction === 'ascending' ? 1 : -1
-      return 0
-    })
-    .map((node) => {
-      if (isArray(node[childrenKey]) && node[childrenKey].length > 0) {
-        return {
-          ...node,
-          children: dfsTreeSort(node[childrenKey], { sortKey, childrenKey, direction }),
-        }
-      }
-      return { ...node }
-    })
 }
