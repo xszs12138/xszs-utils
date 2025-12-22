@@ -32,15 +32,9 @@ console.log(unique(arr)) // [1, 2, 3, 4, 5]
 # 安装依赖
 pnpm install
 
-# 构建所有包
-pnpm build
-
-# 运行测试
-pnpm test
+# 构建 utils
+pnpm utils:build
 
 # 运行 playground
-pnpm dev
-
-# 运行文档
-pnpm docs:dev
+pnpm playground:dev
 ```

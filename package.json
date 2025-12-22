@@ -18,10 +18,5 @@
     "playground:dev": "pnpm --filter @xszs/utils-playground dev",
     "doc:dev": "pnpm --filter @xszs/utils-doc dev",
     "doc:build": "pnpm --filter @xszs/utils-doc build"
-  },
-  "dependencies": {
-    "@xszs/utils": "workspace:*",
-    "@xszs/utils-doc": "workspace:*",
-    "@xszs/utils-playground": "workspace:*"
   }
 }

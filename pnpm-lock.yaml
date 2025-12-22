@@ -194,17 +194,7 @@ catalogs:
 
 importers:
 
-  .:
-    dependencies:
-      '@xszs/utils':
-        specifier: workspace:*
-        version: link:packages/utils
-      '@xszs/utils-doc':
-        specifier: workspace:*
-        version: link:packages/doc
-      '@xszs/utils-playground':
-        specifier: workspace:*
-        version: link:packages/playground
+  .: {}
 
   packages/doc:
     dependencies:
