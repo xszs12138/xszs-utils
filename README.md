@@ -1,6 +1,13 @@
-# some tools
+# xszs-utils
 
-一个实用的工具库，包含了一些常用的工具函数。
+一个实用的工具库 monorepo，包含了一些常用的工具函数。
+
+## 项目结构
+
+这是一个使用 pnpm workspace 的 monorepo 项目：
+
+- `packages/utils` - 核心工具函数库 `@xszs/utils`
+- `playground` - 开发测试 playground
 
 ## 安装
 
@@ -17,4 +24,23 @@ const arr = [1, 2, 3, 4, 5]
 
 console.log(chunk(arr, 2)) // [[1, 2], [3, 4], [5]]
 console.log(unique(arr)) // [1, 2, 3, 4, 5]
+```
+
+## 开发
+
+```bash
+# 安装依赖
+pnpm install
+
+# 构建所有包
+pnpm build
+
+# 运行测试
+pnpm test
+
+# 运行 playground
+pnpm dev
+
+# 运行文档
+pnpm docs:dev
 ```

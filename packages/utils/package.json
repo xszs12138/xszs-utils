@@ -1,0 +1,54 @@
+{
+  "name": "@xszs/utils",
+  "version": "0.0.5",
+  "packageManager": "pnpm@10.7.0",
+  "description": "一个实用的 TypeScript 工具函数库",
+  "author": "",
+  "license": "ISC",
+  "keywords": [
+    "tools"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest test --reporter=tree",
+    "test:ui": "vitest --ui",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "decimal.js": "catalog:utils",
+    "exceljs": "catalog:utils",
+    "file-saver": "catalog:utils"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:utils",
+    "@types/file-saver": "catalog:utils",
+    "@types/node": "catalog:utils",
+    "@vitest/ui": "catalog:utils",
+    "eslint": "catalog:utils",
+    "typescript": "catalog:utils",
+    "vite-plugin-dts": "catalog:utils",
+    "vitest": "catalog:utils"
+  }
+}

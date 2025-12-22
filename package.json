@@ -1,59 +1,27 @@
 {
-  "name": "@xszs/utils",
-  "version": "0.0.4",
+  "name": "xszs-utils-monorepo",
+  "version": "0.0.0",
+  "private": true,
   "packageManager": "pnpm@10.7.0",
-  "description": "一个实用的 TypeScript 工具函数库",
+  "description": "xszs-utils monorepo",
   "author": "",
   "license": "ISC",
-  "keywords": [
-    "tools"
-  ],
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "prepublishOnly": "pnpm build",
-    "test": "vitest test --reporter=tree",
-    "test:ui": "vitest --ui",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "docs:dev": "vitepress dev src/doc",
-    "docs:build": "vitepress build src/doc"
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "test:ui": "pnpm -r test:ui",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "dev": "pnpm --filter @xszs/utils-playground dev",
+    "docs:dev": "pnpm --filter @xszs/utils-doc dev",
+    "docs:build": "pnpm --filter @xszs/utils-doc build"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "decimal.js": "^10.6.0",
-    "exceljs": "^4.4.0",
-    "file-saver": "^2.0.5"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^6.7.1",
-    "@types/file-saver": "^2.0.7",
-    "@types/node": "^25.0.2",
-    "@vitest/ui": "^4.0.15",
-    "eslint": "^9.39.2",
-    "typescript": "^5.0.0",
-    "vite": "^7.2.7",
-    "vite-plugin-dts": "^4.5.4",
-    "vitepress": "2.0.0-alpha.15",
-    "vitest": "^4.0.15"
+  "dependencies": {
+    "@xszs/utils": "workspace:*",
+    "@xszs/utils-doc": "workspace:*",
+    "@xszs/utils-playground": "workspace:*"
   }
 }

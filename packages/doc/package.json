@@ -1,0 +1,13 @@
+{
+  "name": "@xszs/utils-doc",
+  "private": true,
+  "packageManager": "pnpm@10.7.0",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "vitepress": "catalog:doc"
+  }
+}
