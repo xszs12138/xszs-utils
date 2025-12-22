@@ -1,0 +1,28 @@
+{
+  "name": "@xszs/utils-playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "catalog:playground"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:playground",
+    "@vitejs/plugin-vue": "catalog:playground",
+    "@vue/tsconfig": "catalog:playground",
+    "typescript": "catalog:playground",
+    "vite": "catalog:playground",
+    "vue-tsc": "catalog:playground",
+    "@xszs/utils": "workspace:*"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@7.2.5"
+    }
+  }
+}

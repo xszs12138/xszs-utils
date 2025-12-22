@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "vitest test --reporter=tree",
+    "test": "vitest test",
     "test:ui": "vitest --ui",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
