@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { generateTimePeriod, getDateRange, getDaysBetweenDates,sleep, isDateAfter, isDateBefore, isDateInRange, transformDataTo24Or96 } from './timeFn'
+import { generateTimePeriod, getDateRange, getDaysBetweenDates,sleep, isDateAfter, isDateBefore, isDateInRange, transformDataTo24Or96, isDateInDateArr } from './timeFn'
 
 describe('generateTimePeriod', () => {
   it('因该返回96个时间点', () => {
@@ -258,6 +258,11 @@ describe('isDateInRange', () => {
     expect(isDateInRange('2025-01-02', ['2025-01-01', '2025-01-01'])).toBe(false)
   })
 
+  it('不合法的日期字符串', () => {
+    expect(isDateInRange('xxxxxxxxxxxxx', ['2025-01-01', '2025-01-01'])).toBe(false)
+    expect(isDateInRange('2025-01-02', ['2025-01-01', '2025-01-01'])).toBe(false)
+  })
+
   it('边界情况：不同时区的 Date 对象', () => {
     const date = new Date('2025-02-01T12:00:00Z')
     const rangeStart = new Date('2025-02-01T00:00:00+08:00') // 北京时间 2025-02-01
@@ -274,6 +279,16 @@ describe('isDateInRange', () => {
   it('边界情况：使用Date对象和字符串混合', () => {
     expect(isDateInRange(new Date('2025-04-01'), ['2025-04-01', new Date('2025-04-10')])).toBe(true)
     expect(isDateInRange(new Date('2025-04-11'), ['2025-04-01', '2025-04-10'])).toBe(false)
+  })
+})
+
+
+
+describe('isDateInDateArr',()=>{
+  
+  it('work', () => {
+    expect(isDateInDateArr(new Date('2025-04-20'), ['2025-04-01', new Date('2025-04-10')])).toBe(false)
+    expect(isDateInDateArr(new Date('2025-04-01'), ['2025-04-01', '2025-04-10'])).toBe(true)
   })
 })
 

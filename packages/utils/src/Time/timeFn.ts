@@ -107,6 +107,16 @@ export function isDateInRange(date: string | Date, range: [string | Date, string
 }
 
 /**
+ * 判断一个日期是否在给定的日期数组里面
+ * @param date 日期
+ * @param range 时间范围
+ * @returns 是否在时间范围内
+ */
+export function isDateInDateArr(date: string | Date, range: (string | Date)[]): boolean {
+  return range.some(item => new Date(item).getTime() === new Date(date).getTime())
+}
+
+/**
  * 判断一个日期在对比日期之后
  * @param date 日期
  * @param compareDate 对比日期
@@ -129,6 +139,7 @@ export function isDateBefore(date: string | Date, compareDate: string | Date): b
   const compareDateObj = new Date(compareDate)
   return dateObj < compareDateObj
 }
+
 
 type TimeUnit = 'day' | 'hour' | 'minute' | 'second'
 /**
@@ -187,6 +198,8 @@ export function getDateRange(dateList: string[] | Set<string> = []): [string, st
   return []
 }
 
+
+
 /**
  * @param data 原始数据 @type 必须含有infoDate和infoTime的键
  * @param calcKeys 需要计算的键 @type 必须含有infoDate和infoTime的键 @values string[]
@@ -204,7 +217,6 @@ export function getDateRange(dateList: string[] | Set<string> = []): [string, st
  * const transFormData = transformDataTo24Or96(data, ['actualLoad'], TimePeriodMode.TwentyFourTimeHour);
  * console.log(transFormData); // [{ infoDate: '2021-01-01', infoTime: '01:00', actualLoad: 1400 }];
  */
-
 export enum TimePeriodMode {
   TwentyFourTimeHour = 24,
   NinetySixTimeHour = 96,
